@@ -3,7 +3,7 @@ import AppView from './views/AppView';
 
 window.addEventListener("load", function(){
 	// Load the views
-	new AppView();
+	AppView.render();
 
 	// Load the model
 	new CountriesModel();

@@ -2,11 +2,7 @@ import CountriesSelectView from './CountriesSelectView';
 import CountriesDetailView from './CountriesDetailView';
 
 class AppView {
-	constructor(){
-		this.render();
-	}
-
-	render(){
+	static render(){
 		new CountriesSelectView();
 		new CountriesDetailView();
 	}
