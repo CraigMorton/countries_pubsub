@@ -1,4 +1,5 @@
 import Request from '../helpers/Request';
+import PubSub from '../helpers/PubSub';
 
 class CountriesModel {
 	constructor(){
@@ -11,33 +12,21 @@ class CountriesModel {
 		// Fetch the countries data from the API
 		this.fetchData();
 
-		// Listen for the select list change event,
-		document.addEventListener("countriesSelectChanged", this.dispatchSelectedCountry.bind(this));
+		// Listen for the select list change event
+		PubSub.subscribe("/country/request", this.dispatchSelectedCountry.bind(this));
 	}
 
 	fetchData(){
 		const request = new Request();
 		request.get(this.url, (countries) => {
 			this.countries = countries;
-			this.dispatchAllCountries();
+			PubSub.publish("/countries/all", this.countries);
 		});
-	}
-
-	dispatchAllCountries(response){
-		// create & dispatch a new custom event, containing all country info
-		const event = new CustomEvent("/countries/all", {
-			detail: this.countries
-		});
-		document.dispatchEvent(event);
 	}
 
 	dispatchSelectedCountry(event){
-		// create & dispatch a new custom event, containing the selected country
 		const index = event.detail;
-		const newEvent = new CustomEvent("/countries/selected", {
-			detail: this.countries[index]
-		});
-		document.dispatchEvent(newEvent);
+		PubSub.publish("/countries/selected", this.countries[index]);
 	}
 }
 
