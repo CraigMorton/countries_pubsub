@@ -1,3 +1,5 @@
+import Request from '../helpers/Request';
+
 class CountriesModel {
 	constructor(){
 		// Instance variables to hold the API URL...
@@ -14,13 +16,11 @@ class CountriesModel {
 	}
 
 	fetchData(){
-		const xhr = new XMLHttpRequest();
-		xhr.open("GET", this.url);
-		xhr.addEventListener("load", () => {
-			this.countries = JSON.parse(xhr.responseText);
+		const request = new Request();
+		request.get(this.url, (countries) => {
+			this.countries = countries;
 			this.dispatchAllCountries();
 		});
-		xhr.send();
 	}
 
 	dispatchAllCountries(response){
